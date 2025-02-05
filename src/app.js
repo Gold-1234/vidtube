@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser"
 import tweetRouter from "./routes/tweet.routes.js"
 import commmentRouter from "./routes/comments.routes.js"
 import likeRouter from "./routes/like.routes.js"
+import playlistRouter from "./routes/playList.routes.js"
 
 const app = express()
 
@@ -29,7 +30,7 @@ app.use('/api/v1/user/video', videoRouter)
 app.use('/api/v1/user/tweet', tweetRouter)
 app.use('/api/v1/user/video/comments', commmentRouter)
 app.use('/api/v1/user/like', likeRouter)
-app.use('/api/v1/user/like', likeRouter)
+app.use('/api/v1/user/playList', playlistRouter)
 
 
 export { app }
