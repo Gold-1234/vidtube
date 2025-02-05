@@ -50,6 +50,43 @@ const getUserTweets = asyncHandler(async (req, res) => {
    }
 })
 
+const getTweetById = asyncHandler(async(req, res) => {
+    const tweetId = req.params.id
+   const tweet = await Tweet.aggregate([
+        {
+          $match: {
+            _id: new mongoose.Types.ObjectId(tweetId)
+          }
+        },
+        {
+          $lookup: {
+            from: "likes",
+            localField: "_id",
+            foreignField: "tweet",
+            as: "likes"
+          }
+        },
+        {
+          $addFields: {
+            likeCount:{
+                $size: "$likes"
+            }
+          }
+        },
+        {
+            $project:{
+                owner: 1,
+                _id: 1,
+                content: 1,
+                likeCount: 1
+            }
+        }
+      ])
+      return res
+      .status(200)
+        .json(new ApiResponse(200, {tweet}, "Tweet fetched!"))
+})
+
 
 const updateTweet = asyncHandler(async (req, res) => {
     //TODO: update tweet
@@ -85,5 +122,6 @@ export {
     createTweet,
     getUserTweets,
     updateTweet,
-    deleteTweet
+    deleteTweet,
+    getTweetById
 }

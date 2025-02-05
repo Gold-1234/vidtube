@@ -7,6 +7,7 @@ import {asyncHandler} from "../utils/asyncHandler.js"
 import {deleteFromCloudinary, uploadOnCloudinary} from "../utils/cloudinaryUpload.js"
 import { extractPublicId } from 'cloudinary-build-url'
 import { v2 as cloudinary } from "cloudinary"
+import likeRouter from "../routes/like.routes.js"
 
 const getAllVideos = asyncHandler(async (req, res) => {
     const { page = 1, limit = 10, query, sortBy, sortType, userId } = req.query
@@ -104,15 +105,19 @@ const publishAVideo = asyncHandler(async (req, res) => {
 
 })
 
-const getVideoById = asyncHandler(async (req, res) => {
-    const videoId = req.params.id
-    //TODO: get video by id
-	const video = await Video.findById(videoId)
-	if(!video){
-		throw new ApiError(400, 'Video not found!')
-	}
-	return res.json(new ApiResponse(200, {video},'Video fetched!'))
-})
+// const getVideoById = asyncHandler(async (req, res) => {
+//     const videoId = req.params.id
+//     //TODO: get video by id
+// 	const video = await Video.findById(videoId)
+// 	const likes = getVideoLikes(videoId)
+// 	console.log(likes);
+	
+// 	if(!video){
+// 		throw new ApiError(400, 'Video not found!')
+// 	}
+	  
+// 	return res.json(new ApiResponse(200, {video},'Video fetched!'))
+// })
 
 const updateVideo = asyncHandler(async (req, res) => {
 	console.log(req);
@@ -209,7 +214,48 @@ const togglePublishStatus = asyncHandler(async (req, res) => {
 	
 })
 
+const getVideoById = asyncHandler(async(req, res) => {
+	const videoId = req.params.id
 
+	const video = await Video.aggregate([
+		{
+		  $match: {
+			_id: new mongoose.Types.ObjectId(videoId)
+		  }
+		},
+		{
+		  $lookup: {
+			from: "likes",
+			localField: "_id",
+			foreignField: "video",
+			as: "likes"
+		  }
+		},
+		{
+		  $addFields: {
+			likeCount:{
+				$size: "$likes"
+			}
+		  }
+		},
+		{
+			$project:{
+				title: 1,
+				description: 1,
+				duration: 1,
+				views: 1,
+				owner: 1,
+				likeCount: 1,
+				_id: 1
+			}
+		  }
+	  ])
+	
+	
+	  return res
+	  	.status(200)
+		.json(new ApiResponse(200, {video}, "Video fetched"))
+})
 
 export {
     getAllVideos,
