@@ -1,5 +1,5 @@
 .env
-.node_modules
+node_modules/
 .prettierrc
 .prettierignore 
-.public
+publicnode_modules/
