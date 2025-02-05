@@ -1,11 +1,12 @@
 import mongoose, {isValidObjectId} from "mongoose"
 import {Video} from "../models/videos.models.js"
 import {User} from "../models/users.models.js"
-import {ApiError} from "../utils/ApiError.js"
-import {ApiResponse} from "../utils/ApiResponse.js"
+import {ApiError} from "../utils/APIError.js"
+import {ApiResponse} from "../utils/APIResponse.js"
 import {asyncHandler} from "../utils/asyncHandler.js"
 import {deleteFromCloudinary, uploadOnCloudinary} from "../utils/cloudinaryUpload.js"
 import { extractPublicId } from 'cloudinary-build-url'
+import { v2 as cloudinary } from "cloudinary"
 
 const getAllVideos = asyncHandler(async (req, res) => {
     const { page = 1, limit = 10, query, sortBy, sortType, userId } = req.query
@@ -18,15 +19,9 @@ const getAllVideos = asyncHandler(async (req, res) => {
 		
 		const videos = await Video.aggregate([
 			{
-			  $group: {
-				_id: "$owner",
-				count: {
-				  $sum: 1,
-				},
-				videos:{
-				  $push: "$$ROOT",
-				},
-			  },
+				$match: {
+					owner: new mongoose.Types.ObjectId(id)
+				}
 			}
 		  ])
 		
@@ -147,7 +142,7 @@ const updateVideo = asyncHandler(async (req, res) => {
 		// 	const thumbnailDelete = await deleteFromCloudinary(thumbnail_public_id)
 		// 	video.thumbnail = await uploadOnCloudinary(thumbnail)
 		// }
-		// await video.save()
+		await video.save()
 	} catch (error) {
 		console.log(error);
 		throw new ApiError(400, 'Error updating details!')
@@ -213,6 +208,8 @@ const togglePublishStatus = asyncHandler(async (req, res) => {
 	return res.status(200).json(new ApiResponse(200, {video}, 'Publish status updated!'))
 	
 })
+
+
 
 export {
     getAllVideos,

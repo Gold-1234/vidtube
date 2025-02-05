@@ -22,9 +22,10 @@ videoRouter.route("/upload").post(
 	 publishAVideo)
 
 videoRouter.route('/publish/:id').get(verifyJWT, togglePublishStatus)
-videoRouter.route('/delete/:id').get(verifyJWT,deleteVideo)
+videoRouter.route('/delete/:id').delete(verifyJWT,deleteVideo)
 videoRouter.route('/').get(verifyJWT,getAllVideos)
 videoRouter.route('/:id').get(verifyJWT,getVideoById)
 videoRouter.route('/update/:id').patch(verifyJWT,updateVideo)
+
 
 export default videoRouter
