@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { upload } from "../middlewares/multer.middleware.js"
 import { verifyJWT } from "../middlewares/auth.middleware.js"
-import {deleteVideo, getAllVideos, publishAVideo, togglePublishStatus, getVideoById, updateVideo} from "../controllers/videos.controller.js"
+import {deleteVideo, getAllVideos, publishAVideo, togglePublishStatus, getVideoById, updateVideo, addToWatchHistory} from "../controllers/videos.controller.js"
 import { v2 as cloudinary } from "cloudinary"
 
 
@@ -24,7 +24,7 @@ videoRouter.route("/upload").post(
 videoRouter.route('/publish/:id').get(verifyJWT, togglePublishStatus)
 videoRouter.route('/delete/:id').delete(verifyJWT,deleteVideo)
 videoRouter.route('/').get(verifyJWT,getAllVideos)
-videoRouter.route('/:id').get(verifyJWT,getVideoById)
+videoRouter.route('/:id').get(verifyJWT, addToWatchHistory, getVideoById)
 videoRouter.route('/update/:id').patch(verifyJWT,updateVideo)
 
 

@@ -105,20 +105,6 @@ const publishAVideo = asyncHandler(async (req, res) => {
 
 })
 
-// const getVideoById = asyncHandler(async (req, res) => {
-//     const videoId = req.params.id
-//     //TODO: get video by id
-// 	const video = await Video.findById(videoId)
-// 	const likes = getVideoLikes(videoId)
-// 	console.log(likes);
-	
-// 	if(!video){
-// 		throw new ApiError(400, 'Video not found!')
-// 	}
-	  
-// 	return res.json(new ApiResponse(200, {video},'Video fetched!'))
-// })
-
 const updateVideo = asyncHandler(async (req, res) => {
 	console.log(req);
 	
@@ -257,11 +243,62 @@ const getVideoById = asyncHandler(async(req, res) => {
 		.json(new ApiResponse(200, {video}, "Video fetched"))
 })
 
+const addToWatchHistory = asyncHandler(async(req, res) => {
+	const videoId = req.params.id
+	try {
+		const user = await User.findById(req.user._id)
+		console.log(videoId);
+		console.log(user);
+				
+		const isVideoInHistory = user.watchHistroy.includes(videoId)
+		const video = await Video.findById(videoId)
+		
+		if(!video){
+			return res.status(404).json(new ApiResponse(404, null, "Video not found!"))
+		}
+
+		if(!isVideoInHistory){
+			user.watchHistroy.push(videoId)
+			await user.save()
+
+			video.views += 1
+			await video.save()
+
+			const videoInHistory = await Video.findById(videoId).select("-createdAt -updatedAt")
+			return res.status(200).json(
+                new ApiResponse(
+                    200,
+                    videoInHistory,
+                    "Video added to watch history successfully and view count incremented"
+                )
+            );
+		}else{
+			video.views += 1
+			await video.save()
+
+			const videoInHistory = await Video.findById(videoId).select("-createdAt -updatedAt")
+			return res.status(200).json(
+                new ApiResponse(
+                    200,
+                    videoInHistory,
+                    "video already in watch History"
+                )
+            );
+		}
+		
+	} catch (error) {
+		console.log(error);
+		
+		return res.json(new ApiResponse(500, error, "Failed to add video to watchHistory"))
+	}
+})
+
 export {
     getAllVideos,
     publishAVideo,
     getVideoById,
     updateVideo,
     deleteVideo,
-    togglePublishStatus
+    togglePublishStatus,
+	addToWatchHistory
 }
