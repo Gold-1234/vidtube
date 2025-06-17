@@ -1,20 +1,132 @@
-This is the backend part of a YouTube-like application implemented using Node.js and Express.js. The project provides essential functionalities like user registration, video management, and file uploads. Here’s an overview of the features and technologies used:
+# VidTube - A YouTube-like Video Platform
 
--> **User Authentication**: Implemented user authentication with features like registration and login.
+VidTube is a modern video sharing platform built with Node.js and Express.js, offering a comprehensive set of features for video sharing, user interaction, and content management.
 
--> **File Uploads**: Used Multer to handle video and image uploads, with Cloudinary for cloud storage and management of uploaded media.
+## Features
 
--> **Database**: Integrated MongoDB to store user data, videos, and other app-related information.
+### Core Features
+- User Authentication & Authorization
+  - Secure registration and login system
+  - JWT-based authentication
+  - Password hashing with bcrypt
 
--> **Video** **Management**: Implemented functionality for adding and managing video data.
+- Video Management
+  - Video upload and processing
+  - HLS streaming support
+  - Video metadata management
+  - Video categorization
 
-Upcoming Features:
--> **Video Streaming**: Working on implementing a video streaming feature to serve content efficiently to users.
+- Media Processing
+  - Video transcoding using FFmpeg
+  - Image processing for thumbnails
+  - Cloudinary integration for media storage
 
--> **Comments & Interaction**s: Adding support for user comments, likes, and dislikes on videos to enhance interaction.
+### User Features
+- User profiles and management
+- Video upload and sharing
+- Like/dislike functionality
+- Comment system
+- Social interaction features
+- Video search and discovery
 
--> **Social Features**: Implementing a Twitter-like feature for sharing thoughts or short updates related to videos.
+### Technical Features
+- RESTful API architecture
+- MongoDB integration with Mongoose
+- File upload handling with Multer
+- CORS support for cross-origin requests
+- Cookie-based session management
+- Environment variable configuration
 
--> **Analytics Dashboard**: Aiming to integrate basic video performance analytics for content creators.
+## Tech Stack
 
-This backend serves as a foundation for the full-featured Vidtube app, which aims to provide an engaging video platform for users.
+### Backend
+- Node.js
+- Express.js
+- MongoDB (with Mongoose)
+- FFmpeg for video processing
+- Cloudinary for media storage
+- JWT for authentication
+- bcrypt for password hashing
+
+### Dependencies
+```json
+{
+  "@ffmpeg-installer/ffmpeg": "^1.1.0",
+  "bcrypt": "^5.1.1",
+  "cloudinary": "^2.5.1",
+  "cors": "^2.8.5",
+  "dotenv": "^16.4.7",
+  "ejs": "^3.1.10",
+  "express": "^4.21.2",
+  "fluent-ffmpeg": "^2.1.3",
+  "hls-server": "^1.5.0",
+  "jsonwebtoken": "^9.0.2",
+  "mongoose": "^8.9.5",
+  "multer": "^1.4.5-lts.1"
+}
+```
+
+## Getting Started
+
+### Prerequisites
+- Node.js (v14 or higher)
+- MongoDB
+- FFmpeg
+- Cloudinary account
+
+### Installation
+1. Clone the repository
+```bash
+git clone https://github.com/yourusername/vidtube.git
+```
+
+2. Install dependencies
+```bash
+cd vidtube
+npm install
+```
+
+3. Configure environment variables
+Create a `.env` file in the root directory with the following variables:
+```
+PORT=3000
+MONGODB_URI=your_mongodb_uri
+JWT_SECRET=your_jwt_secret
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
+```
+
+4. Start the server
+```bash
+# Development mode
+npm run dev
+
+# Production mode
+npm start
+```
+
+The server will start on `http://localhost:3000`
+
+## API Documentation
+
+Detailed API documentation is available in the `API.md` file.
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the ISC License - see the LICENSE file for details.
+
+## Acknowledgments
+- FFmpeg for video processing capabilities
+- Cloudinary for media storage and management
+- Express.js for the robust web framework
+- MongoDB for scalable database solution
+
