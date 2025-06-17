@@ -1,5 +1,6 @@
 # VidTube - A YouTube-like Video Platform
 [![Run in Postman](https://run.pstmn.io/button.svg)]([https://web.postman.co/workspace/My-Workspace~8e34ee0b-2a3b-4de6-82f5-3528760f0bd7/collection/40785574-579929ee-8591-455d-854a-daa680c4e898?action=share&creator=40785574](https://.postman.co/workspace/My-Workspace~8e34ee0b-2a3b-4de6-82f5-3528760f0bd7/collection/40785574-9041a15e-3de7-4e1c-bad5-74e5347344d8?action=share&creator=40785574))
+
 VidTube is a modern video sharing platform built with Node.js and Express.js, offering a comprehensive set of features for video sharing, user interaction, and content management.
 
 ## Features
